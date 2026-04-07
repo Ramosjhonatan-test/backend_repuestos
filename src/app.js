@@ -14,11 +14,25 @@ const app = express();
 app.use(helmet({
   crossOriginResourcePolicy: false,
 }));
-// Permitir CORS (puedes restringirlo después al dominio de Vercel)
+// Configuración de CORS refinada para producción
+const allowedOrigins = [
+  'https://repuestos-web-five.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:3000'
+];
+
 app.use(cors({
-  origin: '*',
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido por CORS (Origin: ' + origin + ')'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  credentials: true,
+  optionsSuccessStatus: 200 // Algunas versiones de navegadores antiguos necesitan esto
 }));
 app.use(morgan('dev'));
 app.use(express.json());

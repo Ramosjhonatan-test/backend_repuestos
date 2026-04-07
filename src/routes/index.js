@@ -8,6 +8,10 @@ const proveedorRutas = require('./proveedor.routes');
 
 const router = express.Router();
 
+router.get('/', (req, res) => {
+  res.json({ message: 'API V1 de Venta de Repuestos - Operativa' });
+});
+
 router.use('/categorias', categoriaRutas);
 router.use('/auth', autenticacionRutas);
 router.use('/ventas', ventaRutas);
