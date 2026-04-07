@@ -27,6 +27,7 @@ module.exports = {
   production: {
     use_env_variable: 'DATABASE_URL',
     dialect: 'postgres',
+    dialectModule: require('pg'), // CRITICAL: Fix for Vercel "Please install pg package manually"
     logging: false,
     dialectOptions: {
       ssl: {
